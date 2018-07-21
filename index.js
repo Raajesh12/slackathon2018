@@ -34,12 +34,7 @@ const channels = {};
 // SLACK EVENTS 
 ////////////////////////////////////////////////////////////////////////////////////////////
 app.post('/slack_events', (req, res) => {
-  if (req.body.event.username === BOT_USERNAME) {
-    res.end();
-    return;
-  }
-  
-  const channelId = req.body.event.channel;
+
   switch (req.body.type) {
     case 'url_verification': {
       // verify Events API endpoint by returning challenge if present
@@ -48,6 +43,11 @@ app.post('/slack_events', (req, res) => {
     }
       
     case 'event_callback': {
+	  if (req.body.event.username === BOT_USERNAME) {
+	    res.end();
+	    return;
+	  }
+  	const channelId = req.body.event.channel;
       switch (req.body.event.type) {
         case 'message': {
           web.chat.postMessage({ channel: channelId, token: botoauth,text: introText })
