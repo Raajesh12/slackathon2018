@@ -49,9 +49,12 @@ const getPairings = (myLocation, time, isDriver, callback) => {
       addresses.push(row['location']);
       userids.push(row['slack_id']);
     }
+
+    console.log("addresses: ",addresses, "userids: ", userids);
     matchLogic(myLocation, [addresses, userids]).then(callback);
   };
   if (isDriver) {
+    console.log("LOL");
     get_open_riders(workspace, time, true, pairingsHelper);
   } else {
     get_open_drivers(workspace, time, true, pairingsHelper);
