@@ -5,7 +5,7 @@
 var express = require('express');
 const bodyParser = require('body-parser');
 const { WebClient } = require('@slack/client');
-const {insertIntoDb} = require('./databaseReducers');
+const {insertIntoDb, getPairings} = require('./databaseReducers');
 
 var app = express();
 
@@ -128,12 +128,18 @@ app.post('/slack_interactive_actions', (req, res) => {
 		console.log("Added user");
 	    res.send(String(err || ''));
 	    web.chat.postMessage({ channel: channelId, token: botoauth,text: "OK! Once I find a match, I'll let you know in a group DM :slightly_smiling_face:!" });
+	    getPairings(time, userJson.driver, (data)=>{
+	    	console.log("DATA for pairing: " + String(data));
+	    	web.chat.postMessage({ channel: channelId, token: botoauth,text: "Hey found a possible match!" });
+	    });
+	    /*
+	    OPEN GROUP DM
 	    web.conversations.open({ token: botoauth, users: "UBP4K9QQ7,UBM2Y581X" })
 	    .then(
 	      (res) => {
 	        web.chat.postMessage({ channel: res.channel.id, token: botoauth, text: "Hi :wave: You're paired to carpool!"});
 	      }
-	    );
+	    );*/
 	});
   }
 });
