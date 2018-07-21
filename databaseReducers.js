@@ -14,12 +14,12 @@ const {insert_rider, insert_driver, get_open_riders, get_open_drivers} = require
      // numSeats: 'a',
      //
      // time: '7' }
-const workspace = 'slackathon'
+const workspace = 'Slackathon'
 const insertIntoDb = (userJson, callback) => {
   if (userJson.driver) {
     insert_driver({
       slack_id: userJson.userId,
-      workspace: 'slackathon2018',
+      workspace: workspace,
       location: userJson.origin,
       morning_time: parseInt(userJson.time),
       evening_time: 0,
