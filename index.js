@@ -131,15 +131,16 @@ app.post('/slack_interactive_actions', (req, res) => {
 	    getPairings(origin, time, userJson.driver, (data)=>{
 	    	console.log("DATA for pairing: " + String(data));
 	    	web.chat.postMessage({ channel: channelId, token: botoauth,text: "Hey found a possible match!" });
+	    	// OPEN GROUP DM
+		    web.conversations.open({ token: botoauth, users: data.userids[1]})
+		    .then(
+		      (res) => {
+		        web.chat.postMessage({ channel: res.channel.id, token: botoauth, text: "Hi :wave: You're paired to carpool!"});
+		      }
+		    );
 	    });
 	    /*
-	    OPEN GROUP DM
-	    web.conversations.open({ token: botoauth, users: "UBP4K9QQ7,UBM2Y581X" })
-	    .then(
-	      (res) => {
-	        web.chat.postMessage({ channel: res.channel.id, token: botoauth, text: "Hi :wave: You're paired to carpool!"});
-	      }
-	    );*/
+	    */
 	});
   }
 });
