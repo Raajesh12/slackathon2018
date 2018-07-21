@@ -1,0 +1,23 @@
+{
+  "name": "slack",
+  "version": "1.0.0",
+  "description": "Test package for our slackathon",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cwlowder/slackathon2018.git"
+  },
+  "author": "Curtis Lowder <curtislowder@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cwlowder/slackathon2018/issues"
+  },
+  "homepage": "https://github.com/cwlowder/slackathon2018#readme"
+}
