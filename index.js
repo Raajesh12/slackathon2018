@@ -122,7 +122,7 @@ app.post('/slack_interactive_actions', (req, res) => {
     channels[channelId] = userJson;
     console.log('final channels', channels);
 	insertIntoDb(userJson, (err)=>{
-	    res.send(String(err));
+	    res.send(String(err || ''));
 	    web.chat.postMessage({ channel: channelId, token: botoauth,text: "OK! Once I find a match, I'll let you know in a group DM :slightly_smiling_face:!" });
 	    web.conversations.open({ token: botoauth, users: "UBP4K9QQ7,UBM2Y581X" })
 	    .then(
