@@ -36,6 +36,19 @@ app.get('/schemas', function(request, response) {
 	});
 })
 
+app.get('/test', function(request, response) {
+	output = ""
+	client.query(`SELECT * FROM drivers WHERE workspace = 'BULLSHIT' AND MORNING_TIME = 9 AND MORNING_SEATS > 0;`, (err, res) => {
+		if (err) throw err;
+		for (let row of res.rows) {
+			console.log(JSON.stringify(row));
+			output += JSON.stringify(row) + "\n"
+		}
+		response.send(output);
+	});
+})
+
+/*
 app.get('/init', function(request, response) {
 	output = "INITING DRIVERS:\n";
 	client.query(`CREATE TABLE IF NOT EXISTS DRIVERS(
@@ -70,7 +83,7 @@ app.get('/init', function(request, response) {
 			response.send(output);
 		});
 	});
-})
+})*/
 
 app.get('/test_lol', function(request, response) {
 	response.send('OMG WHAT IS UP MY BUDDIES???')
