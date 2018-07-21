@@ -36,7 +36,7 @@ const insertIntoDb = (userJson, callback) => {
   }
 };
 
-const getPairings = (time, isDriver, callback) => {
+const getPairings = (myLocation, time, isDriver, callback) => {
   let addresses = [];
   let userids = [];
   const pairingsHelper = (error, response) => {
@@ -49,7 +49,7 @@ const getPairings = (time, isDriver, callback) => {
       addresses.push(row['location']);
       userids.push(row['slack_id']);
     }
-    matchLogic(startLocation, [addresses, userids]).then(callback);
+    matchLogic(myLocation, [addresses, userids]).then(callback);
   };
   if (isDriver) {
     get_open_riders(workspace, time, true, pairingsHelper);

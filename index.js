@@ -128,7 +128,7 @@ app.post('/slack_interactive_actions', (req, res) => {
 		console.log("Added user");
 	    res.send(String(err || ''));
 	    web.chat.postMessage({ channel: channelId, token: botoauth,text: "OK! Once I find a match, I'll let you know in a group DM :slightly_smiling_face:!" });
-	    getPairings(time, userJson.driver, (data)=>{
+	    getPairings(origin, time, userJson.driver, (data)=>{
 	    	console.log("DATA for pairing: " + String(data));
 	    	web.chat.postMessage({ channel: channelId, token: botoauth,text: "Hey found a possible match!" });
 	    });
