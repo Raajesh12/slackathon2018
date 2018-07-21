@@ -13,15 +13,51 @@ app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(request, response) {
-	client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+	output = ""
+	client.query('SELECT * FROM DRIVERS;', (err, res) => {
 		if (err) throw err;
-		tester = ""
 		for (let row of res.rows) {
 			console.log(JSON.stringify(row));
-			tester += JSON.stringify(row) + "\n"
+			output += JSON.stringify(row) + "\n"
 		}
-		response.send(tester);
+		response.send(output);
 	});
+})
+
+app.get('/schemas', function(request, response) {
+	output = ""
+	client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+		if (err) throw err;
+		for (let row of res.rows) {
+			console.log(JSON.stringify(row));
+			output += JSON.stringify(row) + "\n"
+		}
+		response.send(output);
+	});
+})
+
+app.get('/init', function(request, response) {
+	output = "";
+	client.query(`CREATE TABLE IF NOT EXISTS DRIVERS(
+			ID INT PRIMARY KEY NOT NULL,
+			MORNING_TIME INT,
+			EVENING_TIME INT,
+			location VARCHAR,
+			MAX_SEATS INT,
+			MORNING_SEATS INT,
+			EVENING_SEATS INT
+		);`, (err, res) => {
+		if (err) throw err;
+		for (let row of res.rows) {
+			console.log(JSON.stringify(row));
+			output += JSON.stringify(row) + "\n"
+		}
+		response.send(output);
+	});
+})
+
+app.get('/test_lol', function(request, response) {
+	response.send('OMG WHAT IS UP MY BUDDIES???')
 })
 
 app.listen(app.get('port'), function() {
