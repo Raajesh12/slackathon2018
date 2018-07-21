@@ -3,11 +3,11 @@ var app = express()
 const { Client } = require('pg');
 
 const client = new Client({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL || "postgres://drpwhstlkluois:302845cdfada362f5345abb01bb1bf5c7e51b02af284ea53d85dfeaaebb03548@ec2-23-21-238-28.compute-1.amazonaws.com:5432/dc2su62job91i9",
   ssl: true,
 });
 
-client.connect();
+client.connect().catch(console.error);
 
 app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
