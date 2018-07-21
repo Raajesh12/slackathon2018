@@ -15,10 +15,12 @@ app.use(express.static(__dirname + '/public'))
 app.get('/', function(request, response) {
 	client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
 		if (err) throw err;
+		tester = ""
 		for (let row of res.rows) {
 			console.log(JSON.stringify(row));
+			tester += JSON.stringify(row) + "\n"
 		}
-		response.send('TEST');
+		response.send(tester);
 	});
 })
 
