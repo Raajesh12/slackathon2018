@@ -40,9 +40,10 @@ app.get('/init', function(request, response) {
 	output = "";
 	client.query(`CREATE TABLE IF NOT EXISTS DRIVERS(
 			ID INT PRIMARY KEY NOT NULL,
+			WORKSPACE VARCHAR NOT NULL,
 			MORNING_TIME INT,
 			EVENING_TIME INT,
-			location VARCHAR,
+			LOCATION VARCHAR,
 			MAX_SEATS INT,
 			MORNING_SEATS INT,
 			EVENING_SEATS INT
