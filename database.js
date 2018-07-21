@@ -17,6 +17,15 @@ function get_open_drivers(workspace, time, isMorning, callback) {
 	);
 }
 
+// get_open_riders('Slackathon', 9, true,function(err, res){} )
+function get_open_riders(workspace, time, isMorning, callback) {
+	let dayHalf = isMorning ? 'MORNING' : 'EVENING'
+	client.query(
+		util.format(`SELECT * FROM riders WHERE workspace = '%s' AND %s_TIME = %d AND driver IS NULL;`, workspace, dayHalf, time),
+		callback
+	);
+}
+
 // get_driver('Test_Driver', function(err, res){} )
 function get_driver(slack_id, callback) {
 	client.query(
@@ -92,6 +101,7 @@ function update_driver_seats(slack_id, isMorning, amount, callback) {
 }
 
 module.exports.get_open_drivers = get_open_drivers;
+module.exports.get_open_riders = get_open_riders;
 module.exports.get_driver = get_driver;
 module.exports.get_rider = get_rider;
 module.exports.insert_driver = insert_driver;
