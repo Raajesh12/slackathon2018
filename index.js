@@ -37,14 +37,14 @@ app.get('/schemas', function(request, response) {
 })
 
 app.get('/init', function(request, response) {
-	output = "";
+	output = "INITING DRIVERS:\n";
 	client.query(`CREATE TABLE IF NOT EXISTS DRIVERS(
-			ID INT PRIMARY KEY NOT NULL,
+			ID serial PRIMARY KEY,
 			WORKSPACE VARCHAR NOT NULL,
 			MORNING_TIME INT,
 			EVENING_TIME INT,
 			LOCATION VARCHAR,
-			MAX_SEATS INT,
+			MAX_CAPACITY INT,
 			MORNING_SEATS INT,
 			EVENING_SEATS INT
 		);`, (err, res) => {
@@ -53,7 +53,22 @@ app.get('/init', function(request, response) {
 			console.log(JSON.stringify(row));
 			output += JSON.stringify(row) + "\n"
 		}
-		response.send(output);
+		output += "INITING RIDERS:\n"
+		client.query(`CREATE TABLE IF NOT EXISTS RIDERS(
+				ID INT PRIMARY KEY NOT NULL,
+				WORKSPACE VARCHAR NOT NULL,
+				MORNING_TIME INT,
+				EVENING_TIME INT,
+				LOCATION VARCHAR,
+				DRIVER INT references DRIVERS(ID)
+			);`, (err, res) => {
+			if (err) throw err;
+			for (let row of res.rows) {
+				console.log(JSON.stringify(row));
+				output += JSON.stringify(row) + "\n"
+			}
+			response.send(output);
+		});
 	});
 })
 
