@@ -14,7 +14,7 @@ const {insert_rider, insert_driver, get_open_riders, get_open_drivers} = require
      // numSeats: 'a',
      //
      // time: '7' }
-const workspace = 'slackathon2018'
+const workspace = 'slackathon'
 const insertIntoDb = (userJson, callback) => {
   if (userJson.driver) {
     insert_driver({
@@ -40,6 +40,7 @@ const getPairings = (myLocation, time, isDriver, callback) => {
   let addresses = [];
   let userids = [];
   const pairingsHelper = (error, response) => {
+    console.log("ROFL");
     if (error) {
       console.log('db error', error);
       return;
