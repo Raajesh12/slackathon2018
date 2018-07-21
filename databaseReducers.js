@@ -23,7 +23,7 @@ const insertIntoDb = (userJson, callback) => {
       location: userJson.origin,
       morning_time: parseInt(userJson.time),
       evening_time: 0,
-      max_capacity: parseInt(userjson.numSeats)
+      max_capacity: parseInt(userJson.numSeats)
     }, callback)
   } else {
     insert_rider({
