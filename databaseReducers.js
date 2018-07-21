@@ -24,20 +24,17 @@ const insertIntoDb = (userJson, callback) => {
       morning_time: parseInt(userJson.time),
       evening_time: 0,
       max_capacity: parseInt(userjson.numSeats)
-    }, callback)}
+    }, callback)
   } else {
     insert_rider({
       slack_id: userJson.userId,
       workspace: workspace,
       location: userJson.origin,
       morning_time: parseInt(userJson.time),
-      evening_time: 0
-
-    }, callback);
-
+      evening_time: 0,
+    }, callback)
   }
-}
-
+};
 
 const getPairings = (time, isDriver, callback) => {
   let addresses = [];
@@ -61,3 +58,6 @@ const getPairings = (time, isDriver, callback) => {
   }
 
 }
+
+module.exports.insertIntoDb = insertIntoDb;
+module.exports.getPairings = getPairings;
