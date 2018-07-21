@@ -45,7 +45,7 @@ const getPairings = (time, isDriver, callback) => {
       return;
     }
 
-    for (let row of res.rows) {
+    for (let row of response.rows) {
       addresses.push(row['location']);
       userids.push(row['slack_id']);
     }
