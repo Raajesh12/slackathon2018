@@ -4,7 +4,8 @@
   "description": "Test package for our slackathon",
   "main": "index.js",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "pg": "^7.4.3"
   },
   "devDependencies": {},
   "scripts": {
