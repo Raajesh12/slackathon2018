@@ -1,6 +1,7 @@
 var express = require('express')
 var app = express()
 const { Client } = require('pg');
+const { get_open_drivers, get_driver, get_rider, insert_driver, insert_rider, update_rider_with_driver, update_rider_remove_driver, update_driver_seats } = require('./database');
 
 const client = new Client({
   connectionString: process.env.DATABASE_URL || "postgres://drpwhstlkluois:302845cdfada362f5345abb01bb1bf5c7e51b02af284ea53d85dfeaaebb03548@ec2-23-21-238-28.compute-1.amazonaws.com:5432/dc2su62job91i9",
@@ -37,8 +38,8 @@ app.get('/schemas', function(request, response) {
 })
 
 app.get('/test', function(request, response) {
-	output = ""
-	client.query(`SELECT * FROM drivers WHERE workspace = 'BULLSHIT' AND MORNING_TIME = 9 AND MORNING_SEATS > 0;`, (err, res) => {
+	let output = "";
+	get_open_drivers('Slackathon', 6, false, (err, res) => {
 		if (err) throw err;
 		for (let row of res.rows) {
 			console.log(JSON.stringify(row));

@@ -1,3 +1,4 @@
+const util = require('util');
 const { Client } = require('pg');
 
 const client = new Client({
@@ -7,36 +8,94 @@ const client = new Client({
 
 client.connect().catch(console.error);
 
+// get_open_drivers('Slackathon', 6, false, function(err, res){} )
 function get_open_drivers(workspace, time, isMorning, callback) {
 	let dayHalf = isMorning ? 'MORNING' : 'EVENING'
-	client.query(`SELECT * FROM drivers WHERE workspace = '` + workspace + `' AND ` + dayHalf + `_TIME = ` + String(time)+ ` AND ` + dayHalf + `_SEATS > 0;`, (err, res) => {
-		callback(err, res);
-	});
+	client.query(
+		util.format(`SELECT * FROM drivers WHERE workspace = '%s' AND %s_TIME = %d AND %s_SEATS > 0;`, workspace, dayHalf, time, dayHalf),
+		callback
+	);
 }
 
-function get_driver(id, callback) {
-	client.query(`SELECT * FROM drivers WHERE id = ` + id  + `;`, (err, res) => {
-		callback(err, res);
-	});
+// get_driver('Test_Driver', function(err, res){} )
+function get_driver(slack_id, callback) {
+	client.query(
+		util.format(`SELECT * FROM drivers WHERE slack_id = '%s';`, slack_id),
+		callback
+	);
 }
 
-function insert_driver(id, callback) {
-	client.query(`SELECT * FROM drivers WHERE id = ` + id  + `;`, (err, res) => {
-		callback(err, res);
-	});
+// get_rider('Test_Rider', function(err, res){} )
+function get_rider(slack_id, callback) {
+	client.query(
+		util.format(`SELECT * FROM riders WHERE slack_id = '%s';`, slack_id),
+		callback
+	);
 }
 
-get_drivers('BULLSHIT', 8, true, (err, response)=>{
-	if (err) {
-		// Handle error
-		return;
-	} else {
-		// IT WORKED!
-		output = ""
-		for (let row of response.rows) {
-			console.log(JSON.stringify(row));
-			output += JSON.stringify(row) + "\n"
-		}
-		console.log(output)
-	}
-});
+// Opts should look like:
+// {
+// 		slack_id: 'Test_Driver2',
+// 		workspace: 'Slackathon',
+// 		morning_time: 9,
+// 		evening_time: 5,
+// 		location: '400 Market St San Francisco, CA',
+// 		max_capacity: 6,
+// 	}
+function insert_driver(opts, callback) {
+	client.query(
+		util.format(`INSERT INTO DRIVERS(slack_id, workspace, morning_time, evening_time, location, max_capacity, morning_seats, evening_seats) 
+			VALUES ('%s', '%s', %d, %d, '%s', %d, %d, %d);`, opts["slack_id"], opts["workspace"], opts["morning_time"], opts["evening_time"], opts["location"], opts["max_capacity"], opts["max_capacity"], opts["max_capacity"]), 
+		callback
+	);
+}
+
+// let opts = {
+// 	slack_id: 'Test_Rider2',
+// 	workspace: 'Slackathon',
+// 	morning_time: 9,
+// 	evening_time: 5,
+// 	location: '300 Shattuck Avenue Berkeley, CA'
+// };
+function insert_rider(opts, callback) {
+	client.query(
+		util.format(`INSERT INTO RIDERS(slack_id, workspace, morning_time, evening_time, location) 
+			VALUES ('%s', '%s', %d, %d, '%s');`, opts["slack_id"], opts["workspace"], opts["morning_time"], opts["evening_time"], opts["location"]), 
+		callback
+	);
+}
+
+// update_rider_with_driver('Test_Rider', 'Test_Driver', function(err, response){} )
+function update_rider_with_driver(rider_slack_id, driver_slack_id, callback) {
+	client.query(
+		util.format(`UPDATE RIDERS SET driver = '%s' WHERE slack_id = '%s';`, driver_slack_id, rider_slack_id),
+		callback
+	);
+}
+
+// update_rider_remove_driver('Test_Rider', function(err, response){} )
+function update_rider_remove_driver(rider_slack_id, callback) {
+	client.query(
+		util.format(`UPDATE RIDERS SET driver = NULL WHERE slack_id = '%s';`, rider_slack_id),
+		callback
+	);
+}
+
+// update_driver_seats('Test_Driver', true, 1, function(err, response){} )
+function update_driver_seats(slack_id, isMorning, amount, callback) {
+	let dayHalf = isMorning ? 'MORNING' : 'EVENING'
+
+	client.query(
+		util.format(`UPDATE DRIVERS SET %s_seats = %s_seats + %d WHERE slack_id = '%s';`, dayHalf, dayHalf, amount, slack_id),
+		callback
+	);
+}
+
+module.exports.get_open_drivers = get_open_drivers;
+module.exports.get_driver = get_driver;
+module.exports.get_rider = get_rider;
+module.exports.insert_driver = insert_driver;
+module.exports.insert_rider = insert_rider;
+module.exports.update_rider_with_driver = update_rider_with_driver;
+module.exports.update_rider_remove_driver = update_rider_remove_driver;
+module.exports.update_driver_seats = update_driver_seats;
