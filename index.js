@@ -129,7 +129,7 @@ app.post('/slack_interactive_actions', (req, res) => {
 	        web.chat.postMessage({ channel: res.channel.id, token: botoauth, text: "Hi :wave: You're paired to carpool!"});
 	      }
 	    );
-	}
+	});
   }
 });
 /***********************************************************************************/
