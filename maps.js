@@ -1,5 +1,5 @@
 
-const GOOGLE_API;
+const GOOGLE_API = "AIzaSyCUABcby-9vvpXsSEre-LRuYdQ0UIAIXBo";
 
 var google = require("@google/maps").createClient({
   key: GOOGLE_API,

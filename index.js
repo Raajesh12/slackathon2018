@@ -5,7 +5,7 @@
 var express = require('express');
 const bodyParser = require('body-parser');
 const { WebClient } = require('@slack/client');
-const {insertIntoDb} = require('./databaseReducer');
+const {insertIntoDb} = require('./databaseReducers');
 
 var app = express();
 
