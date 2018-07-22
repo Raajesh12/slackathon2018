@@ -126,7 +126,8 @@ app.post('/slack_interactive_actions', (req, res) => {
       	console.log(err);
       	console.log(res);
       	if (hasAccepted) {
-      		web.chat.postMessage({ channel: channelId, token: botoauth, text: payload.user.name + " has accepted!"});
+      		let text = payload.user.name + " has accepted!\n Feel free to discuss how to meet up!"
+      		web.chat.postMessage({ channel: channelId, token: botoauth, text:text});
       	} else {
       		web.chat.postMessage({ channel: channelId, token: botoauth, text: payload.user.name + " has rejected... sorry :cry:"});
       	}
