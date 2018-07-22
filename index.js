@@ -6,6 +6,7 @@ var express = require('express');
 const bodyParser = require('body-parser');
 const { WebClient } = require('@slack/client');
 const {insertIntoDb, getPairings} = require('./databaseReducers');
+const { update_driver_seats } = require('/database');
 
 var app = express();
 
@@ -108,6 +109,29 @@ app.post('/slack_interactive_actions', (req, res) => {
       res.end();
     }   
     //ask for address
+    if (payload.callback_id === "accept_or_decline") {
+      console.log('got the payload accept or delcine', payload.actions);
+      
+      // IF ACCEPT, AMOUNT = 1
+      // IF DECLINE, AMOUNT = -1
+
+      var hasAccepted = payload.actions[0].value == "accept";
+
+
+      var slackId = payload.user.id; // = SOMETHING 
+      var isMorning = true;
+      var amount = hasAccepted ? 1 : -1;
+
+      update_driver_seats(slackId, true, amount, (err, res) => {
+      	console.log(err);
+      	console.log(res);
+      });
+
+      res.send('');
+      // WE GOT ACCEPT RIDE BUTTON, DECREMENT YOUR THING HERE
+      // const valuevalue = payload.actions[0].value;
+
+    }
   }
   
   if (payload.type === "dialog_submission") {
@@ -136,7 +160,7 @@ app.post('/slack_interactive_actions', (req, res) => {
 		    .then(
 		      (res) => {
 		      	console.log("GROUP CHAT: " + userJson.userId + "," + data);
-		        web.chat.postMessage({ channel: res.channel.id, token: botoauth, text: "Hi :wave: You're paired to carpool!"});
+		        web.chat.postMessage(acceptRideButton(res.channel.id));
 		      }
 		    );
 	    });
@@ -153,6 +177,36 @@ app.post('/slack_interactive_actions', (req, res) => {
 var listener = app.listen(process.env.PORT, function() {
   console.log('Your app is listening on plort ' + listener.address().port);
 });
+
+const acceptRideButton = (channelId) => {
+  return {
+    "channel": channelId,
+    "text": "Hey :wave:! You're paired to carpool! ",
+    "token": botoauth,
+    "attachments": [
+      {
+        "fallback": "unable to accept",
+        "callback_id": "accept_or_decline",
+        "color": "#3AA3E3",
+        "attachment_type": "default",
+        "actions": [
+          {
+              "name": "accept",
+              "text": "accept",
+              "type": "button",
+              "value": "accept"
+          },
+          {
+              "name": "decline",
+              "text": "decline",
+              "type": "button",
+              "value": "decline"
+          },
+        ]
+      }
+    ]
+  }
+}
 
 const driverOrRider = (channelId) =>  {
   return {
