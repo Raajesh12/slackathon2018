@@ -120,7 +120,7 @@ app.post('/slack_interactive_actions', (req, res) => {
 
       var slackId = payload.user.id; // = SOMETHING 
       var isMorning = true;
-      var amount = hasAccepted ? 1 : -1;
+      var amount = hasAccepted ? -1 : 0;
 
       update_driver_seats(slackId, true, amount, (err, res) => {
       	console.log(err);
