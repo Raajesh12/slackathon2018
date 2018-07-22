@@ -159,7 +159,7 @@ app.post('/slack_interactive_actions', (req, res) => {
 	    res.send(String(err || ''));
 	    web.chat.postMessage({ channel: channelId, token: botoauth,text: "OK! Once I find a match, I'll let you know in a group DM :slightly_smiling_face:!" });
 	    getPairings(origin, time, userJson.driver, (data)=>{
-	    	console.log("DATA for pairing: " + String(data));
+	    	console.log("DATA for pairing: " + data);
 	    	if (!data || len(data) === 0) {
 	    		return;
 	    	}
