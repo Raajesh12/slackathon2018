@@ -19,7 +19,7 @@ const clientSecret = "c92d675a7f4f688906a79666f0d00c25";
 const clientId = "369235392373.401960661712";
 const verifToken = "9bAlS03W7clTdtmSzfkch4I4";
 
-const BOT_USERNAME = 'daifuku';
+const BOT_USERNAME = 'slackpool';
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
