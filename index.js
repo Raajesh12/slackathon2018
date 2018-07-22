@@ -133,6 +133,7 @@ app.post('/slack_interactive_actions', (req, res) => {
 	    	web.chat.postMessage({ channel: channelId, token: botoauth,text: "Hey found a possible match!" });
 	    	// OPEN GROUP DM
 	    	for (let d in data) {
+	    		console.log("GROUPING: " + userJson.userId + "," + d);
 			    web.conversations.open({ token: botoauth, users: userJson.userId + "," + d})
 			    .then(
 			      (res) => {
