@@ -31,6 +31,7 @@ exports.matchLogic = function getPassengers(startLocation, locationArrays) {
       });
 
       const filtered = mapped.filter((element) => element.distance < maxDistance).map((element) => locationArrays[1][element.index]);
+      console.log(">>>>", mapped, typeof filtered);
       resolve(filtered);
     })
     .catch((err) => {
