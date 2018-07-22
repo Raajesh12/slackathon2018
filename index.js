@@ -163,7 +163,7 @@ app.post('/slack_interactive_actions', (req, res) => {
 	    	if (!Array.isArray(data)) {
 	    		data = [data]
 	    	}
-	    	if (!data || len(data) == 0) {
+	    	if (!data || data.length === 0) {
 	    		return;
 	    	}
 	    	web.chat.postMessage({ channel: channelId, token: botoauth,text: "Hey found a possible match!" });
