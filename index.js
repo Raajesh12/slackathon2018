@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
   res.end("<h1><a href='https://almond-degree.glitch.me/slack_events'>/slack_events</a></h1>");
 });
 
-const introText = "Hi there :wave:\nI'm Daifuku. Lets save the environment by carpooling :car:!\nTo match you up with people, I need to know some information:";
+const introText = "Hi there :wave:\nI'm slackpool. Lets save the :earth_americas: by carpooling :car:!\nTo match you up with people, I need to know some information:";
 //will be userid: {location, start time, driver?, etc. 
 const channels = {};
 
