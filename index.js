@@ -125,6 +125,11 @@ app.post('/slack_interactive_actions', (req, res) => {
       update_driver_seats(slackId, true, amount, (err, res) => {
       	console.log(err);
       	console.log(res);
+      	if (hasAccepted) {
+      		web.chat.postMessage({ channel: channelId, token: botoauth, text: payload.user.name + " has accepted!"});
+      	} else {
+      		web.chat.postMessage({ channel: channelId, token: botoauth, text: payload.user.name + " has rejected... sorry :sad:"});
+      	}
       });
 
       res.send('');
